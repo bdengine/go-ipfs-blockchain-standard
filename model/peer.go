@@ -11,3 +11,8 @@ type CorePeer struct {
 	Peer      `json:"peer"`
 	Addresses []string `json:"addresses"`
 }
+
+const (
+	RoleCore = 1
+	RoleLite = 0
+)

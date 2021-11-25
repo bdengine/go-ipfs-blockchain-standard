@@ -11,6 +11,8 @@ type BasicPeer interface {
 	ResponseApply(cid string, pid string) (*model.Apply, error)
 	GetServerList() ([]model.CorePeer, error)
 	NewPeer(pid string) (*model.Peer, error)
+	// 获取节点身份
+	GetPeer(pid string) (*model.Peer, error)
 }
 
 type ServerPeer interface {
@@ -47,7 +49,7 @@ type FilePermissionFinder interface {
 // FilePermissionController 文件权限操作相关接口
 type FilePermissionController interface {
 	// NewIpfsFilePermission 新增ipfs文件权限信息
-	NewIpfsFilePermission(cid string, state int) (*model.IpfsFileInfo, error)
+	NewIpfsFilePermission(cid string, encryptCid string, uuid []byte, secretKey []byte, state int) (*model.IpfsFileInfo, error)
 	// Share 分享文件
 	Share(cid string, pid string, limit model.Limit) (*model.IpfsFileInfo, error)
 
@@ -65,4 +67,6 @@ type FileApplyer interface {
 	ApplyIpfsRemote(cid string) (*model.Apply, error)
 	// 	ApplyIpfsRemote 本地文件申请
 	ApplyIpfsLocal(cid string) (string, error)
+
+	GetFileInfo(cid string) (c string, password string, err error)
 }
