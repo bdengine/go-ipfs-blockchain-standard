@@ -14,12 +14,13 @@ type FileApplyer interface {
 type FileOwner interface {
 	AddFile(info model.IpfsFileInfo) error
 	DeleteFile(cid string) error
+	RechargeFile(cid string, storeDays int64) error
 }
 
 // ChainInfoReader 该接口方法应使用读方法实现，在select层设有缓存
 type ChainInfoReader interface {
 	// 获取白名单
-	GetPeerList() ([]model.CorePeer, error)
+	GetPeerList(num int) ([]model.CorePeer, error)
 	// 获取链上唯一id
 	GetUserCode() (string, error)
 	// 获取指定pid的节点信息
