@@ -2,71 +2,46 @@ package _interface
 
 import "github.com/ipfs/go-ipfs-auth/standard/model"
 
-type AuthAPI interface {
-	Server
-	LitePeer
+type FileApplyer interface {
+	ApplyLocal(cid string) error
+	ApplyRemote(cid string) error
 }
 
-type BasicPeer interface {
-	ResponseApply(cid string, pid string) (*model.Apply, error)
-	GetServerList() ([]model.CorePeer, error)
-	NewPeer(pid string) (*model.Peer, error)
-	// 获取节点身份
-	GetPeer(pid string) (*model.Peer, error)
-}
-
-type ServerPeer interface {
-	BasicPeer
-	Server
-}
-
-type LitePeer interface {
-	BasicPeer
-	FileOwner
-	FileApplyer
-	FilePermissionFinder
-}
-
-type Server interface {
-	ApplyJoinServerNet(addresses []string) error
-	AuthJoinApply(pid string, i int) (model.JoinServerListApply, error)
-	JoinServerNet() ([]model.Peer, error)
-	GetApply(peerId string) ([]model.JoinServerListApply, error)
-}
-
-// FilePermissionFinder 文件权限查询相关接口
-type FilePermissionFinder interface {
-	// FindFileAuth 获取文件权限信息
-	FindFileAuth(cid string) (*model.Apply, error)
-	// FindFileList 获取已拥有文件列表
-	FindFileList(pid string) ([]string, error)
-	// FindFileReaderList 获取文件阅读者列表
-	FindFileReaderList(cid string) ([]string, error)
-	// FindPeerReadingHistory 获取节点阅读历史
-	FindPeerReadingHistory() ([]string, error)
-}
-
-// FilePermissionController 文件权限操作相关接口
-type FilePermissionController interface {
-	// NewIpfsFilePermission 新增ipfs文件权限信息
-	NewIpfsFilePermission(cid string, encryptCid string, uuid []byte, secretKey []byte, state int) (*model.IpfsFileInfo, error)
-	// Share 分享文件
-	Share(cid string, pid string, limit model.Limit) (*model.IpfsFileInfo, error)
-
-	Change(cid string, ipfs model.IpfsFileInfo) (*model.IpfsFileInfo, error)
-
-	Delete(cid string) error
-}
+/*type FileProvider interface {
+	Response
+}*/
 
 type FileOwner interface {
-	FilePermissionController
+	AddFile(info model.IpfsFileInfo) error
+	DeleteFile(cid string) error
 }
 
-type FileApplyer interface {
-	// 	ApplyIpfsRemote 远程文件申请
-	ApplyIpfsRemote(cid string) (*model.Apply, error)
-	// 	ApplyIpfsRemote 本地文件申请
-	ApplyIpfsLocal(cid string) (string, error)
+// ChainInfoReader 该接口方法应使用读方法实现，在select层设有缓存
+type ChainInfoReader interface {
+	// 获取白名单
+	GetPeerList() ([]model.CorePeer, error)
+	// 获取链上唯一id
+	GetUserCode() (string, error)
+	// 获取指定pid的节点信息
+	GetPeer(id string) (model.CorePeer, error)
+}
 
-	GetFileInfo(cid string) (c string, password string, err error)
+type Cacher interface {
+	//GetCache()(*cache.Cache,error)
+}
+
+type Miner interface {
+	//ReportContribute(num int64)error
+	GetChallenge() (string, error)
+	Mining([]model.IpfsMining) error
+}
+
+type Peer interface {
+	FileOwner
+	FileApplyer
+	ChainInfoReader
+	//Cacher
+	Miner
+	InitPeer(peer model.CorePeer) error
+	DaemonPeer() error
 }
