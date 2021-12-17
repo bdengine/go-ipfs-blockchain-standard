@@ -34,7 +34,7 @@ type Cacher interface {
 type Miner interface {
 	//ReportContribute(num int64)error
 	GetChallenge() (string, error)
-	Mining([]model.IpfsMining) error
+	Mining(model.IpfsMining) error
 	UpdateAddress(addrList []string) error
 	Heartbeat() error
 }

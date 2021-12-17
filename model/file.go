@@ -18,6 +18,9 @@ type IpfsFile struct {
 }
 
 type IpfsMining struct {
-	Cid  string `json:"cid"`
-	Hash string `json:"hash"`
+	Cid         string `json:"cid"`
+	Hash        string `json:"hash"`
+	Address     string `json:"address"`
+	LeadingZero int    `json:"leadingZero"`
+	Challenge   string `json:"challenge"`
 }
