@@ -17,6 +17,11 @@ type FileOwner interface {
 	RechargeFile(cid string, storeDays int64) error
 }
 
+type FileUploader interface {
+	CheckTrustStatus(owner string) error
+	FileOwner
+}
+
 // ChainInfoReader 该接口方法应使用读方法实现，在select层设有缓存
 type ChainInfoReader interface {
 	// 获取白名单
@@ -37,6 +42,7 @@ type Miner interface {
 	Mining(model.IpfsMining) error
 	UpdateAddress(addrList []string) error
 	Heartbeat() error
+	GetFileList(n int64) ([]string, error)
 }
 
 type Peer interface {
