@@ -1,4 +1,4 @@
-module github.com/ipfs/go-ipfs-auth/standard
+module github.com/bdengine/go-ipfs-blockchain-standard
 
 go 1.15
 
