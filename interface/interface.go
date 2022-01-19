@@ -1,6 +1,6 @@
 package _interface
 
-import "github.com/ipfs/go-ipfs-auth/standard/model"
+import "github.com/bdengine/go-ipfs-blockchain-standard/model"
 
 type FileApplyer interface {
 	ApplyLocal(cid string) error
