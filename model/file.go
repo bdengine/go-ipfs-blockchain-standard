@@ -5,6 +5,7 @@ type IpfsFileInfo struct {
 	Cid       string `json:"cid"`
 	Uid       string `json:"uid"`
 	Size      int64  `json:"size"`
+	SliceNum  int64  `json:"sliceNum"`
 	Owner     string `json:"owner"`
 	State     uint8  `json:"state"`
 	StoreDays int64  `json:"storeDays"`
