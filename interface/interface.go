@@ -1,6 +1,9 @@
 package _interface
 
-import "github.com/bdengine/go-ipfs-blockchain-standard/model"
+import (
+	"github.com/bdengine/go-ipfs-blockchain-standard/dto"
+	"github.com/bdengine/go-ipfs-blockchain-standard/model"
+)
 
 type FileApplyer interface {
 	ApplyLocal(cid string) error
@@ -39,10 +42,15 @@ type Cacher interface {
 type Miner interface {
 	//ReportContribute(num int64)error
 	GetChallenge() (string, error)
-	Mining(model.IpfsMining) error
+	Mining(m dto.MiningDTO) error
 	UpdateAddress(addrList []string) error
 	Heartbeat() error
 	GetFileList(n int64) ([]string, error)
+	GetStoreChallenge() (string, error)
+	GetChallengeStage() (int64, string, int64, error)
+
+	UpdateOrGen(m dto.StoreProofDTO) error
+	Prove(m dto.SVProofDTO) error
 }
 
 type Peer interface {
@@ -52,5 +60,5 @@ type Peer interface {
 	//Cacher
 	Miner
 	InitPeer(peer model.CorePeer) error
-	DaemonPeer() error
+	DaemonPeer() ([]string, error)
 }
